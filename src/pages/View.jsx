@@ -3,9 +3,11 @@ import Header from '../components/Header'
 import { useParams } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import { addToWishlist } from '../redux/slices/wishlistSlice'
+import { addToCart } from '../redux/slices/cartSlice'
 
 
 const View = () => {
+  const userCart=useSelector(state=>state.cartReducer)
 
   const dispatch = useDispatch()
   const userWishlist = useSelector(state => state.wishlistReducer)
@@ -37,6 +39,16 @@ const View = () => {
     }
   }
 
+  const handleCart = () => {
+    dispatch(addToCart(product))
+    const existingProduct=userCart?.find(item=>item?.id==id)
+    if (existingProduct) {
+      alert("Product quantity is incrementing!!!")
+    } else {
+      alert("Product added to cart!!!")
+    }
+  }
+
 
 
 
@@ -49,17 +61,17 @@ const View = () => {
             <img width={'450px'} height={'200px'} src={product?.thumbnail} alt="" />
             <div className='flex justify-between mt-5'>
               <button onClick={handleWishlist} className='bg-blue-600 text-white p-2'>Add to wishlist</button>
-              <button className='bg-green-600 text-white p-2'>Add to cart</button>
+              <button onClick={handleCart} className='bg-green-600 text-white p-2'>Add to cart</button>
             </div>
           </div>
           <div>
-            <h3 className='font-bold'>{product?.id}</h3>
+            <h3 className='font-bold'>PID:{product?.id}</h3>
             <h1 className='text-5xl font-bold'>{product?.title}</h1>
-            <h4 className='font-bold text-red-600 text-2xl'>{product?.price}</h4>
-            <h4>{product?.brand}</h4>
-            <h4>{product?.category}</h4>
+            <h4 className='font-bold text-red-600 text-2xl'>Price:{product?.price}</h4>
+            <h4>Brand:{product?.brand}</h4>
+            <h4>Category:{product?.category}</h4>
             <p>
-              <span className='font-bold'>{product?.description}</span>: Lorem ipsum dolor sit amet consectetur adipisicing elit. Laboriosam harum, vitae, quo architecto adipisci non molestiae enim quibusdam tempora necessitatibus numquam exercitationem eligendi, recusandae aspernatur eius animi id doloribus omnis.
+              <span className='font-bold'>Description:{product?.description}</span>: Lorem ipsum dolor sit amet consectetur adipisicing elit. Laboriosam harum, vitae, quo architecto adipisci non molestiae enim quibusdam tempora necessitatibus numquam exercitationem eligendi, recusandae aspernatur eius animi id doloribus omnis.
             </p>
             <h3 className='font-bold'>Client Reviews</h3>
             {
